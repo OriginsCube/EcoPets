@@ -152,3 +152,55 @@ allprojects {
         }
     }
 }
+
+val libreforgeShadowFileName = "libreforge-$libreforgeVersion-shadow.jar"
+
+tasks.register("bundleLibreforge") {
+    description = "Inject the libreforge shadow jar into the distributable jar"
+    dependsOn("libreforgeJar")
+
+    doLast {
+        val shadow = file(
+            (findProperty("libreforgeShadowJar") as String?) ?: "libs/$libreforgeShadowFileName"
+        )
+
+        if (!shadow.isFile) {
+            throw GradleException(
+                """
+                Missing $libreforgeShadowFileName.
+
+                The distributable jar must contain libreforge at its root, otherwise the
+                server refuses to enable EcoPets and no libreforge plugin ever loads.
+                The Gradle plugin only fetches it from the private Auxilor repository,
+                which needs MAVEN_USERNAME and MAVEN_PASSWORD.
+
+                Without those credentials, extract it from an official EcoPets jar of the
+                same version and drop it in libs/, or point at it explicitly:
+                    ./gradlew bundleLibreforge -PlibreforgeShadowJar=/path/to/$libreforgeShadowFileName
+                """.trimIndent()
+            )
+        }
+
+        val target = file("bin/${rootProject.name} v$version.jar")
+        if (!target.isFile) {
+            throw GradleException("Expected ${target.path} to exist, run libreforgeJar first")
+        }
+
+        val platform = layout.buildDirectory.file("tmp/platform").get().asFile
+        platform.parentFile.mkdirs()
+        platform.writeText("platform=SPIGOT\n")
+
+        ant.withGroovyBuilder {
+            "zip"("destfile" to target, "update" to true) {
+                "fileset"("file" to shadow.absolutePath)
+                "fileset"("file" to platform.absolutePath)
+            }
+        }
+
+        logger.lifecycle("Bundled $libreforgeShadowFileName into ${target.name}")
+    }
+}
+
+tasks.matching { it.name == "libreforgeJar" }.configureEach {
+    finalizedBy("bundleLibreforge")
+}
