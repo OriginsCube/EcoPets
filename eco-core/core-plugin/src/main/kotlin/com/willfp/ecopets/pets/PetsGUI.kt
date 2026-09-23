@@ -13,6 +13,7 @@ import com.willfp.eco.core.items.Items
 import com.willfp.eco.core.items.builder.ItemStackBuilder
 import com.willfp.eco.core.sound.PlayableSound
 import com.willfp.eco.util.StringUtils
+import com.willfp.ecopets.integrations.FontImages
 import com.willfp.ecopets.plugin
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -82,7 +83,7 @@ object PetsGUI {
         }
 
         return menu(plugin.configYml.getInt("gui.rows")) {
-            title = plugin.langYml.getString("menu.title")
+            title = FontImages.replace(plugin.langYml.getString("menu.title"))
 
             setMask(
                 FillerMask(

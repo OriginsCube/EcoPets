@@ -6,6 +6,7 @@ dependencies {
 
     implementation("com.willfp:ecomponent:1.5.0")
     implementation("com.willfp:ModelEngineBridge:1.4.0")
+    compileOnly("com.github.LoneDev6:api-itemsadder:3.6.1")
 }
 
 tasks {
