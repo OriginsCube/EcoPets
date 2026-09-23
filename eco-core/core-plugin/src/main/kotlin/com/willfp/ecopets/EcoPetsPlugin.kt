@@ -8,6 +8,7 @@ import com.willfp.eco.core.placeholder.PlayerPlaceholder
 import com.willfp.eco.util.StringUtils
 import com.willfp.ecopets.commands.CommandEcoPets
 import com.willfp.ecopets.commands.CommandPets
+import com.willfp.ecopets.integrations.ItemsAdderLoadListener
 import com.willfp.ecopets.items.ArgParserPetLevel
 import com.willfp.ecopets.items.ArgParserPetXp
 import com.willfp.ecopets.libreforge.ConditionHasActivePet
@@ -149,6 +150,9 @@ class EcoPetsPlugin : LibreforgePlugin() {
                 PetEntity.registerPetEntity("modelengine") { pet, id ->
                     ModelEnginePetEntity(pet, id)
                 }
+            },
+            IntegrationLoader("ItemsAdder") {
+                this.eventManager.registerListener(ItemsAdderLoadListener)
             }
         )
     }

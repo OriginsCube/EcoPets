@@ -16,6 +16,7 @@ import com.willfp.eco.core.sound.PlayableSound
 import com.willfp.eco.util.NumberUtils
 import com.willfp.ecomponent.components.LevelComponent
 import com.willfp.ecomponent.components.LevelState
+import com.willfp.ecopets.integrations.FontImages
 import com.willfp.ecopets.plugin
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -78,7 +79,7 @@ class PetLevelGUI(
                 plugin.langYml.getString("menu.level-title")
             }
 
-            title = title.replace("%pet%", pet.name)
+            title = FontImages.replace(title.replace("%pet%", pet.name))
 
             maxPages(component.pages)
 

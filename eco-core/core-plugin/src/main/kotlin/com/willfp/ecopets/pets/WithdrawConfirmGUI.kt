@@ -8,6 +8,7 @@ import com.willfp.eco.core.gui.slot.MaskItems
 import com.willfp.eco.core.items.Items
 import com.willfp.eco.core.items.builder.ItemStackBuilder
 import com.willfp.eco.core.sound.PlayableSound
+import com.willfp.ecopets.integrations.FontImages
 import com.willfp.ecopets.plugin
 import org.bukkit.entity.Player
 
@@ -18,7 +19,7 @@ object WithdrawConfirmGUI {
         val cancelCfg = cfg.getSubsection("cancel")
 
         val gui = menu(cfg.getInt("rows")) {
-            title = cfg.getFormattedString("title")
+            title = FontImages.replace(cfg.getFormattedString("title"))
 
             setMask(
                 FillerMask(
