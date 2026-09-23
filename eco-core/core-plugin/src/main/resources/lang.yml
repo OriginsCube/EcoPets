@@ -37,6 +37,16 @@ messages:
   cannot-afford-withdraw: "&cYou cannot afford to withdraw this pet! Cost: &e%price%"
   pet-withdrawn: "&fYou withdrew your %pet%&f pet into an egg!"
 
+# Menu titles support ItemsAdder font images when ItemsAdder is installed.
+# Write the font image id between colons and it is replaced at render time,
+# which is how custom menu backgrounds and icons are drawn in the title bar.
+#
+#   title: ":pets_menu_background: Pets (%page%/%max_page%)"
+#   level-title: ":pets_level_background: %pet% (%page%/%max_page%)"
+#
+# The id is the font image name declared in your ItemsAdder pack, under
+# font_images in plugins/ItemsAdder/contents/<pack>/configs/*.yml
+# An unknown id is left as plain text, so check the name if you see the colons in game.
 menu:
   title: "Pets (%page%/%max_page%)"
   level-title: "%pet% (%page%/%max_page%)"
