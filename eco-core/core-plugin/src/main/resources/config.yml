@@ -51,6 +51,26 @@ gui:
       row: 5
       column: 8
 
+  # One slot per simultaneously active pet, filled in the order declared below.
+  # A player allowed fewer pets than there are positions only sees the first ones,
+  # the remaining slots are drawn with the mask material so they blend into the background.
+  # Left click opens the pet progression, right click unequips that pet.
+  # Remove the positions list to fall back to the single pet-info slot underneath, which keeps
+  # the same left click and right click behaviour on the active pet.
+  pet-slots:
+    positions:
+      - { row: 1, column: 5 }
+      - { row: 1, column: 4 }
+      - { row: 1, column: 6 }
+      - { row: 1, column: 7 }
+      - { row: 1, column: 8 }
+
+    empty:
+      item: gray_stained_glass_pane
+      name: "&7Empty slot"
+      lore:
+        - "&fPick a pet from the options below!"
+
   pet-info:
     row: 1
     column: 5
@@ -159,7 +179,9 @@ gui:
       row: 6
       column: 5
 
+  # Redundant when pet-slots is used, right clicking a slot unequips that pet individually.
   deactivate-pet:
+    enabled: false
     item: player_head texture:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTRiZDlhNDViOTY4MWNlYTViMjhjNzBmNzVhNjk1NmIxZjU5NGZlYzg0MGI5NjA3Nzk4ZmIxZTcwNzc2NDQzMCJ9fX0=
     name: "&cDeactivate Pet"
     location:
