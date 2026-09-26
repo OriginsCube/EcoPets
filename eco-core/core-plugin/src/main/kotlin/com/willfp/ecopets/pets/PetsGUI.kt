@@ -13,6 +13,7 @@ import com.willfp.eco.core.items.Items
 import com.willfp.eco.core.items.builder.ItemStackBuilder
 import com.willfp.eco.core.sound.PlayableSound
 import com.willfp.eco.util.StringUtils
+import com.willfp.ecopets.integrations.ActivePetsBridge
 import com.willfp.ecopets.integrations.FontImages
 import com.willfp.ecopets.plugin
 import org.bukkit.Material
@@ -23,6 +24,41 @@ import kotlin.math.ceil
 object PetsGUI {
     private lateinit var menu: Menu
     private val petAreaSlots = mutableListOf<Pair<Int, Int>>()
+    private val petSlotPositions = mutableListOf<Pair<Int, Int>>()
+
+    private fun petInSlot(player: Player, index: Int): Pet? =
+        ActivePetsBridge.getActivePets(player).getOrNull(index)
+
+    // Mirrors the mask so that a slot the player is not allowed to use looks like the background
+    // rather than a hole, whatever material the pattern assigns to that cell.
+    private fun maskItemAt(row: Int, column: Int): ItemStack {
+        val materials = plugin.configYml.getStrings("gui.mask.materials")
+        val digit = plugin.configYml.getStrings("gui.mask.pattern")
+            .getOrNull(row - 1)
+            ?.getOrNull(column - 1)
+            ?.digitToIntOrNull() ?: 0
+
+        if (digit <= 0 || digit > materials.size) {
+            return ItemStack(Material.AIR)
+        }
+
+        return ItemStackBuilder(Items.lookup(materials[digit - 1])).setDisplayName(" ").build()
+    }
+
+    private fun petSlotItemBuilder(player: Player, index: Int): ItemStack {
+        if (index >= ActivePetsBridge.getSlotCount(player)) {
+            val (row, column) = petSlotPositions[index]
+            return maskItemAt(row, column)
+        }
+
+        val pet = petInSlot(player, index)
+            ?: return ItemStackBuilder(Items.lookup(plugin.configYml.getString("gui.pet-slots.empty.item")))
+                .setDisplayName(plugin.configYml.getFormattedString("gui.pet-slots.empty.name"))
+                .addLoreLines(plugin.configYml.getFormattedStrings("gui.pet-slots.empty.lore"))
+                .build()
+
+        return pet.getPetInfoIcon(player)
+    }
 
     internal fun update() {
         val topLeftRow = plugin.configYml.getInt("gui.pet-area.top-left.row")
@@ -35,6 +71,11 @@ object PetsGUI {
             for (column in topLeftColumn..bottomRightColumn) {
                 petAreaSlots.add(Pair(row, column))
             }
+        }
+
+        petSlotPositions.clear()
+        for (position in plugin.configYml.getSubsections("gui.pet-slots.positions")) {
+            petSlotPositions.add(Pair(position.getInt("row"), position.getInt("column")))
         }
 
         menu = buildMenu()
@@ -137,16 +178,46 @@ object PetsGUI {
             addPageChanger(plugin.configYml, "gui.prev-page", PageChanger.Direction.BACKWARDS, pageChangeSound)
             addPageChanger(plugin.configYml, "gui.next-page", PageChanger.Direction.FORWARDS, pageChangeSound)
 
-            setSlot(
-                plugin.configYml.getInt("gui.pet-info.row"),
-                plugin.configYml.getInt("gui.pet-info.column"),
-                slot(petInfoItemBuilder) {
-                    onLeftClick { event, _, _ ->
-                        val player = event.whoClicked as Player
-                        player.activePet?.levelGUI?.open(player)
+            if (petSlotPositions.isEmpty()) {
+                setSlot(
+                    plugin.configYml.getInt("gui.pet-info.row"),
+                    plugin.configYml.getInt("gui.pet-info.column"),
+                    slot(petInfoItemBuilder) {
+                        onLeftClick { event, _, _ ->
+                            val player = event.whoClicked as Player
+                            player.activePet?.levelGUI?.open(player)
+                        }
+
+                        onRightClick { event, _, _ ->
+                            val player = event.whoClicked as Player
+                            val pet = player.activePet ?: return@onRightClick
+
+                            ActivePetsBridge.deactivate(player, pet)
+                            PlayableSound.create(plugin.configYml.getSubsection("gui.pet-icon.click"))?.playTo(player)
+                        }
                     }
+                )
+            } else {
+                for ((index, pair) in petSlotPositions.withIndex()) {
+                    val (row, column) = pair
+                    setSlot(row, column, slot({ player, _ -> petSlotItemBuilder(player, index) }) {
+                        setUpdater { player, _, _ -> petSlotItemBuilder(player, index) }
+
+                        onLeftClick { event, _, _ ->
+                            val player = event.whoClicked as Player
+                            petInSlot(player, index)?.levelGUI?.open(player)
+                        }
+
+                        onRightClick { event, _, _ ->
+                            val player = event.whoClicked as Player
+                            val pet = petInSlot(player, index) ?: return@onRightClick
+
+                            ActivePetsBridge.deactivate(player, pet)
+                            PlayableSound.create(plugin.configYml.getSubsection("gui.pet-icon.click"))?.playTo(player)
+                        }
+                    })
                 }
-            )
+            }
 
             val closeEnabled = plugin.configYml.getBoolOrNull("gui.close.enabled") ?: true
             if (closeEnabled) {
@@ -163,20 +234,23 @@ object PetsGUI {
                 )
             }
 
-            setSlot(
-                plugin.configYml.getInt("gui.deactivate-pet.location.row"),
-                plugin.configYml.getInt("gui.deactivate-pet.location.column"),
-                slot(
-                    ItemStackBuilder(Items.lookup(plugin.configYml.getString("gui.deactivate-pet.item")))
-                        .setDisplayName(plugin.configYml.getString("gui.deactivate-pet.name"))
-                        .build()
-                ) {
-                    onLeftClick { event, _ ->
-                        val player = event.whoClicked as Player
-                        player.activePet = null
+            val deactivateEnabled = plugin.configYml.getBoolOrNull("gui.deactivate-pet.enabled") ?: true
+            if (deactivateEnabled) {
+                setSlot(
+                    plugin.configYml.getInt("gui.deactivate-pet.location.row"),
+                    plugin.configYml.getInt("gui.deactivate-pet.location.column"),
+                    slot(
+                        ItemStackBuilder(Items.lookup(plugin.configYml.getString("gui.deactivate-pet.item")))
+                            .setDisplayName(plugin.configYml.getString("gui.deactivate-pet.name"))
+                            .build()
+                    ) {
+                        onLeftClick { event, _ ->
+                            val player = event.whoClicked as Player
+                            player.activePet = null
+                        }
                     }
-                }
-            )
+                )
+            }
 
             val withdrawEnabled = plugin.configYml.getBoolOrNull("gui.withdraw-pet.enabled") ?: true
             if (withdrawEnabled) {

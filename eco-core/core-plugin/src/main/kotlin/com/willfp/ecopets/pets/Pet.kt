@@ -24,6 +24,7 @@ import com.willfp.eco.util.NumberUtils.evaluateExpression
 import com.willfp.eco.util.formatEco
 import com.willfp.eco.util.toNiceString
 import com.willfp.eco.util.toNumeral
+import com.willfp.ecopets.integrations.ActivePetsBridge
 import com.willfp.ecopets.api.event.PlayerPetActivateEvent
 import com.willfp.ecopets.api.event.PlayerPetDeactivateEvent
 import com.willfp.ecopets.api.event.PlayerPetExpGainEvent
@@ -479,7 +480,7 @@ class Pet(
         val base = baseItem.clone()
 
         val level = player.getPetLevel(this)
-        val isActive = player.activePet == this
+        val isActive = ActivePetsBridge.isActive(player, this)
 
         val baseLoreLocation = if (level == this.maxLevel) "max-level-lore" else "lore"
 
