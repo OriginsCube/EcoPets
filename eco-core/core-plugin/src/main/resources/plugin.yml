@@ -13,9 +13,7 @@ commands:
   ecopets:
     description: Base Command
     permission: ecopets.command.ecopets
-  pets:
-    aliases:
-      - pet
+  pet:
     description: Open the pets menu
     permission: ecopets.command.pets
     default: true

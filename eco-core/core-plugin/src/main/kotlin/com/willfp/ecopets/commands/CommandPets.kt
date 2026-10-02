@@ -8,7 +8,7 @@ import org.bukkit.entity.Player
 
 object CommandPets : PluginCommand(
     plugin,
-    "pets",
+    "pet",
     "ecopets.command.pets",
     true
 ) {
