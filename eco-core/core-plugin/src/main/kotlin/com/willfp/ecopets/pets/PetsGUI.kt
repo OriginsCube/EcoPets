@@ -26,6 +26,9 @@ object PetsGUI {
     private val petAreaSlots = mutableListOf<Pair<Int, Int>>()
     private val petSlotPositions = mutableListOf<Pair<Int, Int>>()
 
+    private fun levelGuiEnabled(): Boolean =
+        plugin.configYml.getBoolOrNull("gui.open-level-gui") ?: true
+
     private fun petInSlot(player: Player, index: Int): Pet? =
         ActivePetsBridge.getActivePets(player).getOrNull(index)
 
@@ -184,6 +187,7 @@ object PetsGUI {
                     plugin.configYml.getInt("gui.pet-info.column"),
                     slot(petInfoItemBuilder) {
                         onLeftClick { event, _, _ ->
+                            if (!levelGuiEnabled()) return@onLeftClick
                             val player = event.whoClicked as Player
                             player.activePet?.levelGUI?.open(player)
                         }
@@ -204,6 +208,7 @@ object PetsGUI {
                         setUpdater { player, _, _ -> petSlotItemBuilder(player, index) }
 
                         onLeftClick { event, _, _ ->
+                            if (!levelGuiEnabled()) return@onLeftClick
                             val player = event.whoClicked as Player
                             petInSlot(player, index)?.levelGUI?.open(player)
                         }

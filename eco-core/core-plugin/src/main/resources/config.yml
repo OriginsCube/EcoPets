@@ -22,6 +22,9 @@ auto-deactivate-on-condition-fail: true
 gui:
   rows: 6
 
+  # If a left click on a pet opens its level/rewards menu.
+  open-level-gui: false
+
   mask:
     # The way the mask works is by having a list of materials
     # And then a pattern to use those materials.
