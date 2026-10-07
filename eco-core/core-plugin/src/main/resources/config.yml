@@ -19,30 +19,6 @@ pet-egg:
 # If a pet should be automatically deactivated when its activate-conditions are no longer met
 auto-deactivate-on-condition-fail: true
 
-# Custom model data applied on top of the menu items (0 keeps the item as defined by its item: line).
-custom-model-data:
-  pets-gui:
-    close: 0
-    deactivate-pet: 0
-    withdraw-pet: 0
-    toggle-hide-pet: 0
-    toggle-show-pet: 0
-    no-active-pet: 0
-    empty-slot: 0
-    prev-page: 0
-    next-page: 0
-  level-gui:
-    unlocked: 0
-    in-progress: 0
-    locked: 0
-    back: 0
-    close: 0
-    prev-page: 0
-    next-page: 0
-  withdraw-confirm:
-    confirm: 0
-    cancel: 0
-
 gui:
   rows: 6
 
@@ -94,6 +70,7 @@ gui:
 
     empty:
       item: gray_stained_glass_pane
+      custom-model-data: 0
       name: "&7Empty slot"
       lore:
         - "&fPick a pet from the options below!"
@@ -110,6 +87,7 @@ gui:
         - "&fPick one from the options below!"
         - ""
       item: player_head texture:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmFkYzA0OGE3Y2U3OGY3ZGFkNzJhMDdkYTI3ZDg1YzA5MTY4ODFlNTUyMmVlZWQxZTNkYWYyMTdhMzhjMWEifX19
+      custom-model-data: 0
 
     active:
       name: "%pet% &fLvl. &a%level%"
@@ -187,12 +165,14 @@ gui:
 
   prev-page:
     item: arrow name:"&fPrevious Page"
+    custom-model-data: 0
     location:
       row: 6
       column: 4
 
   next-page:
     item: arrow name:"&fNext Page"
+    custom-model-data: 0
     item-inactive: gray_dye name:"&7Next Page"
     location:
       row: 6
@@ -201,6 +181,7 @@ gui:
   close:
     enabled: true
     item: barrier
+    custom-model-data: 0
     name: "&cClose"
     location:
       row: 6
@@ -210,6 +191,7 @@ gui:
   deactivate-pet:
     enabled: false
     item: player_head texture:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTRiZDlhNDViOTY4MWNlYTViMjhjNzBmNzVhNjk1NmIxZjU5NGZlYzg0MGI5NjA3Nzk4ZmIxZTcwNzc2NDQzMCJ9fX0=
+    custom-model-data: 0
     name: "&cDeactivate Pet"
     location:
       row: 6
@@ -218,6 +200,7 @@ gui:
   withdraw-pet:
     enabled: true
     item: player_head texture:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmFkYzA0OGE3Y2U3OGY3ZGFkNzJhMDdkYTI3ZDg1YzA5MTY4ODFlNTUyMmVlZWQxZTNkYWYyMTdhMzhjMWEifX19
+    custom-model-data: 0
     name: "&cWithdraw Pet"
     lore:
       - "&7Withdraw your active pet into an egg"
@@ -243,6 +226,7 @@ gui:
 
       confirm:
         item: lime_stained_glass_pane
+        custom-model-data: 0
         name: "&aConfirm Withdrawal"
         lore:
           - "&7Withdraw your active pet into an egg."
@@ -256,6 +240,7 @@ gui:
           category: UI
       cancel:
         item: red_stained_glass_pane
+        custom-model-data: 0
         name: "&cCancel"
         lore: [ ]
         row: 2
@@ -273,12 +258,14 @@ gui:
   toggle:
     hide-pet:
       item: player_head texture:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTI1YjhlZWQ1YzU2NWJkNDQwZWM0N2M3OWMyMGQ1Y2YzNzAxNjJiMWQ5YjVkZDMxMDBlZDYyODNmZTAxZDZlIn19fQ==
+      custom-model-data: 0
       name: "&cHide Pet"
       lore:
         - "&f"
         - "&eClick to hide your pet"
     show-pet:
       item: player_head texture:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjNmNzliMjA3ZDYxZTEyMjUyM2I4M2Q2MTUwOGQ5OWNmYTA3OWQ0NWJmMjNkZjJhOWE1MTI3ZjkwNzFkNGIwMCJ9fX0=
+      custom-model-data: 0
       name: "&aShow Pet"
       lore:
         - "&f"
@@ -337,12 +324,14 @@ level-gui:
 
     prev-page:
       item: arrow name:"&fPrevious Page"
+      custom-model-data: 0
       location:
         row: 6
         column: 4
 
     next-page:
       item: arrow name:"&fNext Page"
+      custom-model-data: 0
       item-inactive: gray_dye name:"&7Next Page"
       location:
         row: 6
@@ -351,6 +340,7 @@ level-gui:
     close:
       enabled: true
       material: barrier
+      custom-model-data: 0
       name: "&cClose"
       location:
         row: 6
@@ -358,6 +348,7 @@ level-gui:
 
     unlocked:
       item: lime_stained_glass_pane
+      custom-model-data: 0
       name: "%pet% &fLvl. &a%level%"
       lore:
         - "&f"
@@ -367,6 +358,7 @@ level-gui:
         - "&aUNLOCKED"
     in-progress:
       item: yellow_stained_glass_pane
+      custom-model-data: 0
       name: "%pet% &fLvl. &a%level%"
       lore:
         - "&f"
@@ -389,6 +381,7 @@ level-gui:
         - "&8» &e%current_xp%&8/&7%required_xp% &fXP"
     locked:
       item: red_stained_glass_pane
+      custom-model-data: 0
       name: "%pet% &fLvl. &a%level%"
       lore:
         - "&f"

@@ -58,7 +58,7 @@ object PetsGUI {
                 .setDisplayName(plugin.configYml.getFormattedString("gui.pet-slots.empty.name"))
                 .addLoreLines(plugin.configYml.getFormattedStrings("gui.pet-slots.empty.lore"))
                 .build()
-                .withModelData("pets-gui.empty-slot")
+                .withModelData("gui.pet-slots.empty.custom-model-data")
 
         return pet.getPetInfoIcon(player)
     }
@@ -93,7 +93,7 @@ object PetsGUI {
                     .setDisplayName(plugin.configYml.getFormattedString("gui.pet-info.no-active.name"))
                     .addLoreLines(plugin.configYml.getFormattedStrings("gui.pet-info.no-active.lore"))
                     .build()
-                    .withModelData("pets-gui.no-active-pet")
+                    .withModelData("gui.pet-info.no-active.custom-model-data")
         }
 
         val togglePetItemBuilder = { player: Player, _: Menu ->
@@ -104,13 +104,13 @@ object PetsGUI {
                     .setDisplayName(plugin.configYml.getFormattedString("gui.toggle.hide-pet.name"))
                     .addLoreLines(plugin.configYml.getFormattedStrings("gui.toggle.hide-pet.lore"))
                     .build()
-                    .withModelData("pets-gui.toggle-hide-pet")
+                    .withModelData("gui.toggle.hide-pet.custom-model-data")
             } else {
                 ItemStackBuilder(Items.lookup(plugin.configYml.getString("gui.toggle.show-pet.item")))
                     .setDisplayName(plugin.configYml.getFormattedString("gui.toggle.show-pet.name"))
                     .addLoreLines(plugin.configYml.getFormattedStrings("gui.toggle.show-pet.lore"))
                     .build()
-                    .withModelData("pets-gui.toggle-show-pet")
+                    .withModelData("gui.toggle.show-pet.custom-model-data")
             }
         }
 
@@ -181,8 +181,8 @@ object PetsGUI {
                 })
             }
 
-            addPageChangerWithModelData("gui.prev-page", "pets-gui.prev-page", PageChanger.Direction.BACKWARDS, pageChangeSound)
-            addPageChangerWithModelData("gui.next-page", "pets-gui.next-page", PageChanger.Direction.FORWARDS, pageChangeSound)
+            addPageChangerWithModelData("gui.prev-page", PageChanger.Direction.BACKWARDS, pageChangeSound)
+            addPageChangerWithModelData("gui.next-page", PageChanger.Direction.FORWARDS, pageChangeSound)
 
             if (petSlotPositions.isEmpty()) {
                 setSlot(
@@ -236,7 +236,7 @@ object PetsGUI {
                         ItemStackBuilder(Items.lookup(plugin.configYml.getString("gui.close.item")))
                             .setDisplayName(plugin.configYml.getString("gui.close.name"))
                             .build()
-                            .withModelData("pets-gui.close")
+                            .withModelData("gui.close.custom-model-data")
                     ) {
                         onLeftClick { event, _ -> event.whoClicked.closeInventory() }
                     }
@@ -252,7 +252,7 @@ object PetsGUI {
                         ItemStackBuilder(Items.lookup(plugin.configYml.getString("gui.deactivate-pet.item")))
                             .setDisplayName(plugin.configYml.getString("gui.deactivate-pet.name"))
                             .build()
-                            .withModelData("pets-gui.deactivate-pet")
+                            .withModelData("gui.deactivate-pet.custom-model-data")
                     ) {
                         onLeftClick { event, _ ->
                             val player = event.whoClicked as Player
@@ -279,7 +279,7 @@ object PetsGUI {
                                     }
                                 }
                                 .build()
-                                .withModelData("pets-gui.withdraw-pet")
+                                .withModelData("gui.withdraw-pet.custom-model-data")
                         }
                     ) {
                         onLeftClick { event, _ ->

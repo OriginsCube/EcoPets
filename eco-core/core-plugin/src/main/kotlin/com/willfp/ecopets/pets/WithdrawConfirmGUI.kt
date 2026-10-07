@@ -36,7 +36,7 @@ object WithdrawConfirmGUI {
                         .setDisplayName(confirmCfg.getFormattedString("name"))
                         .addLoreLines(confirmCfg.getFormattedStrings("lore"))
                         .build()
-                        .withModelData("withdraw-confirm.confirm")
+                        .withModelData("custom-model-data", confirmCfg)
                 ) {
                     onLeftClick { event, _ ->
                         val clicker = event.whoClicked as Player
@@ -55,7 +55,7 @@ object WithdrawConfirmGUI {
                         .setDisplayName(cancelCfg.getFormattedString("name"))
                         .addLoreLines(cancelCfg.getFormattedStrings("lore"))
                         .build()
-                        .withModelData("withdraw-confirm.cancel")
+                        .withModelData("custom-model-data", cancelCfg)
                 ) {
                     onLeftClick { event, _ ->
                         val clicker = event.whoClicked as Player

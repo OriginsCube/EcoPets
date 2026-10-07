@@ -58,7 +58,7 @@ class PetLevelGUI(
                         if (plugin.configYml.getBool("level-gui.progression-slots.level-as-amount")) level else 1
                     )
                     .build()
-                    .withModelData("level-gui.$key")
+                    .withModelData("level-gui.progression-slots.$key.custom-model-data")
             }
 
             override fun getLevelState(player: Player, level: Int): LevelState {
@@ -99,15 +99,15 @@ class PetLevelGUI(
                 slot(
                     plugin.configYml.getStringOrNull("level-gui.progression-slots.prev-page.item")
                         ?.let { Items.lookup(it).item }
-                        ?.withModelData("level-gui.back")
-                        ?: ItemStackBuilder(Items.lookup("arrow")).build().withModelData("level-gui.back")
+                        ?.withModelData("level-gui.progression-slots.prev-page.custom-model-data")
+                        ?: ItemStackBuilder(Items.lookup("arrow")).build().withModelData("level-gui.progression-slots.prev-page.custom-model-data")
                 ) {
                     onLeftClick { player, _, _, _ -> PetsGUI.open(player) }
                 }
             )
 
-            addPageChangerWithModelData("level-gui.progression-slots.prev-page", "level-gui.prev-page", PageChanger.Direction.BACKWARDS, pageChangeSound)
-            addPageChangerWithModelData("level-gui.progression-slots.next-page", "level-gui.next-page", PageChanger.Direction.FORWARDS, pageChangeSound)
+            addPageChangerWithModelData("level-gui.progression-slots.prev-page", PageChanger.Direction.BACKWARDS, pageChangeSound)
+            addPageChangerWithModelData("level-gui.progression-slots.next-page", PageChanger.Direction.FORWARDS, pageChangeSound)
 
             val closeEnabled = plugin.configYml.getBoolOrNull("level-gui.progression-slots.close.enabled") ?: true
             if (closeEnabled) {
@@ -118,7 +118,7 @@ class PetLevelGUI(
                         ItemStackBuilder(Items.lookup(plugin.configYml.getString("level-gui.progression-slots.close.material")))
                             .setDisplayName(plugin.configYml.getString("level-gui.progression-slots.close.name"))
                             .build()
-                            .withModelData("level-gui.close")
+                            .withModelData("level-gui.progression-slots.close.custom-model-data")
                     ) {
                         onLeftClick { event, _ ->
                             event.whoClicked.closeInventory()
