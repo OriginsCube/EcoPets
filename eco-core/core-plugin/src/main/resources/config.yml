@@ -19,6 +19,30 @@ pet-egg:
 # If a pet should be automatically deactivated when its activate-conditions are no longer met
 auto-deactivate-on-condition-fail: true
 
+# Custom model data applied on top of the menu items (0 keeps the item as defined by its item: line).
+custom-model-data:
+  pets-gui:
+    close: 0
+    deactivate-pet: 0
+    withdraw-pet: 0
+    toggle-hide-pet: 0
+    toggle-show-pet: 0
+    no-active-pet: 0
+    empty-slot: 0
+    prev-page: 0
+    next-page: 0
+  level-gui:
+    unlocked: 0
+    in-progress: 0
+    locked: 0
+    back: 0
+    close: 0
+    prev-page: 0
+    next-page: 0
+  withdraw-confirm:
+    confirm: 0
+    cancel: 0
+
 gui:
   rows: 6
 

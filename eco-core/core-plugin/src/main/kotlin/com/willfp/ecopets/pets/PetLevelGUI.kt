@@ -1,6 +1,5 @@
 package com.willfp.ecopets.pets
 
-import com.willfp.eco.core.gui.addPageChanger
 import com.willfp.eco.core.gui.menu
 import com.willfp.eco.core.gui.menu.Menu
 import com.willfp.eco.core.gui.menu.MenuLayer
@@ -59,6 +58,7 @@ class PetLevelGUI(
                         if (plugin.configYml.getBool("level-gui.progression-slots.level-as-amount")) level else 1
                     )
                     .build()
+                    .withModelData("level-gui.$key")
             }
 
             override fun getLevelState(player: Player, level: Int): LevelState {
@@ -99,14 +99,15 @@ class PetLevelGUI(
                 slot(
                     plugin.configYml.getStringOrNull("level-gui.progression-slots.prev-page.item")
                         ?.let { Items.lookup(it).item }
-                        ?: ItemStackBuilder(Items.lookup("arrow")).build()
+                        ?.withModelData("level-gui.back")
+                        ?: ItemStackBuilder(Items.lookup("arrow")).build().withModelData("level-gui.back")
                 ) {
                     onLeftClick { player, _, _, _ -> PetsGUI.open(player) }
                 }
             )
 
-            addPageChanger(plugin.configYml, "level-gui.progression-slots.prev-page", PageChanger.Direction.BACKWARDS, pageChangeSound)
-            addPageChanger(plugin.configYml, "level-gui.progression-slots.next-page", PageChanger.Direction.FORWARDS, pageChangeSound)
+            addPageChangerWithModelData("level-gui.progression-slots.prev-page", "level-gui.prev-page", PageChanger.Direction.BACKWARDS, pageChangeSound)
+            addPageChangerWithModelData("level-gui.progression-slots.next-page", "level-gui.next-page", PageChanger.Direction.FORWARDS, pageChangeSound)
 
             val closeEnabled = plugin.configYml.getBoolOrNull("level-gui.progression-slots.close.enabled") ?: true
             if (closeEnabled) {
@@ -117,6 +118,7 @@ class PetLevelGUI(
                         ItemStackBuilder(Items.lookup(plugin.configYml.getString("level-gui.progression-slots.close.material")))
                             .setDisplayName(plugin.configYml.getString("level-gui.progression-slots.close.name"))
                             .build()
+                            .withModelData("level-gui.close")
                     ) {
                         onLeftClick { event, _ ->
                             event.whoClicked.closeInventory()
